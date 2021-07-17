@@ -6,7 +6,7 @@ class Server{
     constructor(){
         this.app = express();
         this. port = process.env.PORT;
-        this.path = '/';
+        this.usuariosPath = '/usuarios';
 
         // Conectando a la Base de datos
         this.conectarDB();
@@ -15,7 +15,7 @@ class Server{
         this.middlewares();
 
         // Rutas de la aplicación
-        // this.routes();
+        this.routes();
     }
 
     async conectarDB(){
@@ -29,11 +29,11 @@ class Server{
         this.app.use( express.json() );
 
         // Servir el contenido del directorio 'public/  '
-        this.app.use( express.static('public') );
+        // this.app.use( express.static('public') );
     }
 
     routes(){
-        this.app.use( this.path, require() );
+        this.app.use( this.usuariosPath, require('../routes/usuarios.routes') );
     }
 
     listen(){
