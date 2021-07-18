@@ -1,6 +1,5 @@
 const { request, response } = require('express');
 const bcryptjs = require('bcryptjs');
-const { validationResult } = require('express-validator');
 
 const Usuario = require('../models/usuario');
 
@@ -13,12 +12,6 @@ const usuarioGet = ( req = request, res = response) => {
 const usuarioPost = async( req = request, res = response ) => {
     const { name, email, password, role } = req.body
     const usuario = new Usuario({ name, email, password, role });
-
-    // Verify not errors in middlewares before invoque this method 
-    const errors = validationResult(req);
-    if( !errors.isEmpty() ){
-        return res.status(400).json(errors);
-    }
 
     // Verify if email exists
     const existEmail = await Usuario.findOne( {email} );
