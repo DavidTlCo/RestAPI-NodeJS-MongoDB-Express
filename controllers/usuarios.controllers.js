@@ -4,10 +4,10 @@ const bcryptjs = require('bcryptjs');
 const Usuario = require('../models/usuario');
 
 const usuarioGet = async( req = request, res = response ) => {
-    const { from = 0, limit = 20 } = req.query;
+    const { from = 0, limit = 10 } = req.query;
 
     // Register which have status true
-    const query = { estado: true };
+    const query = { status: true };
 
     const [ total, usuarios ] = await Promise.all([
         // Count all register
@@ -18,10 +18,6 @@ const usuarioGet = async( req = request, res = response ) => {
         .skip(Number(from))
         .limit(Number(limit))
     ])
-
-    // const usuarios = await Usuario.find(query)
-    //     .skip(Number(from))
-    //     .limit(Number(limit));
 
     res.json({
         total,
@@ -67,8 +63,21 @@ const usuarioPut = async( req =request, res = response ) => {
     });
 } 
 
+const usuarioDelete = async(req = request, res = response) => {
+    const { id } = req.params;
+
+    // Delete a register hardly
+    // const usuario = await Usuario.findByIdAndDelete( id );
+
+    // Update status is a way to delete a register
+    const usuario = await Usuario.findByIdAndUpdate( id, { status: false });
+
+    res.json( usuario );
+}
+
 module.exports = {
     usuarioGet, 
     usuarioPost,
-    usuarioPut
+    usuarioPut,
+    usuarioDelete
 }
