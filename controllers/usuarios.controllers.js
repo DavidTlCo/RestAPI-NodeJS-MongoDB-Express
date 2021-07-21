@@ -3,7 +3,7 @@ const bcryptjs = require('bcryptjs');
 
 const Usuario = require('../models/usuario');
 
-const usuarioGet = async( req = request, res = response) => {
+const usuarioGet = async( req = request, res = response ) => {
     const { from = 0, limit = 20 } = req.query;
 
     // Register which have status true
@@ -11,10 +11,10 @@ const usuarioGet = async( req = request, res = response) => {
 
     const [ total, usuarios ] = await Promise.all([
         // Count all register
-        Usuario.countDocuments(),
+        Usuario.countDocuments(query),
 
         // Get register
-        Usuario.find()
+        Usuario.find(query)
         .skip(Number(from))
         .limit(Number(limit))
     ])
@@ -66,7 +66,6 @@ const usuarioPut = async( req =request, res = response ) => {
         usuario: `${rest.name}`
     });
 } 
-
 
 module.exports = {
     usuarioGet, 
