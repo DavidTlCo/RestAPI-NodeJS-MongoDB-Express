@@ -3,23 +3,31 @@ const router = Router();
 const { check } = require('express-validator');
 
 const { usuarioPost, usuarioGet, usuarioPut } = require('../controllers/usuarios.controllers');
-const { validateRole, existEmail } = require('../helpers/db-validators');
+const { validateRole, existEmail, existId, existName } = require('../helpers/db-validators');
 const { validarCampos } = require('../middlewares/validar-campos');
+
+router.get('/', usuarioGet);
 
 router.post('/', [
     check('name', 'El nombre es obligatorio').not().isEmpty(),
+    check('name').custom( existName ),
     check('email', 'Correo no válido').isEmail(),
     check('email').custom( existEmail ),
     check('password', 'La contraseña debe tener al menos 6 caracteres').isLength({ min: 6 }),
     // check('role', 'Rol no definido').isIn(['ADMIN_ROLE', 'USER_ROLE']), // Validate  from Schema Usuario, all is in local
     // custom validate from DB
-    // check('role').custom( (role) => roleValidate(role) ),
+    // check('role').custom( (role) => roleValidate(role) ), same that
     check('role').custom( validateRole ),
     validarCampos
 ], usuarioPost);
 
-router.get('/', usuarioGet);
 
-router.put('/', usuarioPut);
+router.put('/:id', [
+    check('id', 'El id no existe en la Base de datos').isMongoId(),
+    check('id').custom( existId ),
+    check('role').custom( validateRole ),
+    validarCampos
+],
+usuarioPut);
 
 module.exports = router;
