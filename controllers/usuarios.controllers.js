@@ -72,7 +72,10 @@ const usuarioDelete = async(req = request, res = response) => {
     // Update status is a way to delete a register
     const usuario = await Usuario.findByIdAndUpdate( id, { status: false });
 
-    res.json( usuario );
+    res.json({
+        usuario,
+        msg: 'Usuario fuera de línea'
+    });
 }
 
 module.exports = {
