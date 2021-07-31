@@ -31,10 +31,13 @@ const UsuarioSchema = Schema({
     }
 });
 
+// Sobreescribiendo el método toJSON para mostrar la información del usuario
 UsuarioSchema.methods.toJSON = function(){
-    const { __v, password, ...usuario } = this.toObject();
+    // Desestructurando los campos delicados 
+    const { __v, password, _id, ...usuario } = this.toObject();
+    // Cambiando visualmente _id por uid
+    usuario.uid = _id;
     return usuario;
 }
-
 
 module.exports = model('Usuario', UsuarioSchema);
