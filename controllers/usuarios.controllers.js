@@ -36,9 +36,8 @@ const usuarioPost = async( req = request, res = response ) => {
     // Saving register in DB Mongoose
     // Important send all atributes required
     await usuario.save();
-
     res.json({
-        mgs: 'Usuario creado exitosamente',
+        mgs: 'PostUser - Usuario creado exitosamente',
         usuario
     });
 }
@@ -58,7 +57,7 @@ const usuarioPut = async( req =request, res = response ) => {
     const user = await Usuario.findByIdAndUpdate( id, rest );
 
     res.json({
-        msg: 'Información actualizada con éxito',
+        msg: 'PutUser - Información actualizada con éxito',
         usuario: `${rest.name}`
     });
 } 
@@ -72,9 +71,12 @@ const usuarioDelete = async(req = request, res = response) => {
     // Update status is a way to delete a register
     const usuario = await Usuario.findByIdAndUpdate( id, { status: false });
 
+    // Obtain user data
+    const  usuarioAutenticado  = req.usuario;
+
     res.json({
         usuario,
-        msg: 'Usuario fuera de línea'
+        msg: "DeleteUser - Usuario desacivado con éxito"
     });
 }
 

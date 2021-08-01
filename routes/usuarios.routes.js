@@ -4,9 +4,10 @@ const router = Router();
 
 const { validarCampos } = require('../middlewares/validar-campos');
 const { validarJWT } = require('../middlewares/validar-jwt');
-const { validateRole, existEmail, existId, existName, deleteUser } = require('../helpers/db-validators');
+const { validateRole, existEmail, existId, existName } = require('../helpers/db-validators');
 
 const { usuarioPost, usuarioGet, usuarioPut, usuarioDelete } = require('../controllers/usuarios.controllers');
+const { esAdmin } = require('../middlewares/validar-roles');
 
 router.get('/', usuarioGet);
 
@@ -34,9 +35,11 @@ router.put('/:id', [
 
 router.delete('/:id', [
     validarJWT,
+    esAdmin,
     check('id', 'El id no existe en la Base de datos').isMongoId(),
     check('id').custom( existId ),
-    check('id').custom( deleteUser ),
+    // Verificar que el usuario esté disponible (status: true)
+    // check('id').custom( deleteUser ),
     validarCampos
 ], usuarioDelete);
 

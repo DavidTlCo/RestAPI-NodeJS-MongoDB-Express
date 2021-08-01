@@ -13,14 +13,14 @@ const login = async( req, res = response ) => {
         const usuario = await Usuario.findOne({ email });
         if( !usuario ){
             return res.status(400).json({
-                msg: "Correo no registrado"
+                msg: "Login - Correo no registrado"
             });
         }
 
         // Verificar si el usuario está activo
         if( !usuario.status ){
             return res.status(400).json({
-                msg: "Usuario no está activo"
+                msg: "Login - Usuario no está activo"
             });
         }
 
@@ -28,7 +28,7 @@ const login = async( req, res = response ) => {
         const contraseniaValida = bcryptjs.compareSync(password, usuario.password);
         if( !contraseniaValida ){
             return res.status(400).json({
-                msg: "Contraseña incorrecta"
+                msg: "Login - Contraseña incorrecta"
             });
         }
 
@@ -38,13 +38,13 @@ const login = async( req, res = response ) => {
         res.json({
             usuario,
             token,
-            msg: 'Usuario autenticado con éxito'
+            msg: 'Login - Usuario autenticado con éxito'
         });
 
     } catch (error) {
         console.log(error);
-        res.status(400).json({
-            msg: "Consulte al admin de la aplicación"
+        res.status(500).json({
+            msg: "Login - Consulte al admin de la aplicación"
         })
     }
 }
