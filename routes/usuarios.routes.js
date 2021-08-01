@@ -7,7 +7,7 @@ const { validarJWT } = require('../middlewares/validar-jwt');
 const { validateRole, existEmail, existId, existName } = require('../helpers/db-validators');
 
 const { usuarioPost, usuarioGet, usuarioPut, usuarioDelete } = require('../controllers/usuarios.controllers');
-const { esAdmin } = require('../middlewares/validar-roles');
+const { esAdmin, validarRole } = require('../middlewares/validar-roles');
 
 router.get('/', usuarioGet);
 
@@ -35,7 +35,8 @@ router.put('/:id', [
 
 router.delete('/:id', [
     validarJWT,
-    esAdmin,
+    // esAdmin,
+    validarRole('ROOT_ROLE', 'ADMIN_ROLE'),
     check('id', 'El id no existe en la Base de datos').isMongoId(),
     check('id').custom( existId ),
     // Verificar que el usuario esté disponible (status: true)
