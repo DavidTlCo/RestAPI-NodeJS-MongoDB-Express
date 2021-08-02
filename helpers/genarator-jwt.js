@@ -13,7 +13,7 @@ const generarToken = ( uid = '' ) => {
                 console.log( err );
                 reject( 'Error al generar el token' );
             }else{
-                console.log( token );
+                // console.log( token );
                 resolve( token );
             }
         });
